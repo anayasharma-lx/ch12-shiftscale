@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Shift and Scale — Ganita Prakash Grade 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0ede8;
+  --border:#d8d4cc;--border-hi:#b8b2a8;
+  --text:#1a1814;--text2:#5a5650;--text3:#9a958e;
+  --accent:#c0392b;--blue:#2c7be5;--green:#1a7a4a;
+  --font:'DM Sans',-apple-system,sans-serif;
+  --mono:'DM Mono',ui-monospace,monospace;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5}
+.page{max-width:820px;margin:0 auto;padding:32px 24px}
+.label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.title{font-size:22px;font-weight:700;margin-bottom:6px}
+.subtitle{font-size:14px;color:var(--text2);margin-bottom:28px;max-width:560px;line-height:1.55}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+.card-title{font-size:12px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:4px}
+.tab{flex:1;padding:9px 0;text-align:center;font-size:13.5px;font-weight:500;color:var(--text2);border-radius:7px;cursor:pointer;border:none;background:none;transition:all .15s}
+.tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08);border:1.5px solid var(--border)}
+
+/* Slider control */
+.slider-row{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.slider-row label{font-size:13px;font-weight:500;color:var(--text2);min-width:110px}
+.slider-row input[type=range]{flex:1;height:5px;accent-color:var(--accent);cursor:pointer}
+.slider-val{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--accent);min-width:36px;text-align:right}
+
+/* Two-panel layout */
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:560px){.panels{grid-template-columns:1fr}}
+.panel{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:16px}
+.panel-title{font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.panel canvas{display:block;width:100%}
+
+/* Formula strip */
+.formula{background:#fff8f0;border:1.5px solid #f0d8c0;border-radius:10px;padding:16px 20px;font-size:14px;line-height:1.7;color:#5a3800}
+.formula .eq{font-family:var(--mono);font-size:16px;font-weight:500;color:#a05000;display:block;margin:4px 0}
+.formula strong{color:#a05000}
+
+/* Data chips */
+.data-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:4px 10px;font-family:var(--mono);font-size:12.5px;color:var(--text)}
+.chip.changed{border-color:#2c7be5;color:#2c7be5;background:#f0f5ff}
+
+/* Mean badge */
+.mean-badge{display:inline-flex;align-items:center;gap:6px;background:#fff5f5;border:1.5px solid #f0c0c0;border-radius:8px;padding:8px 14px;font-size:13px;font-family:var(--mono);color:#c0392b;font-weight:500}
+.mean-badge .arrow{font-size:18px;color:#b8b2a8}
+.badges{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="label">Chapter 5 · Tales by Dots and Lines</div>
+  <div class="title">Shift and Scale</div>
+  <div class="subtitle">What happens to the mean when every value in the data changes by the same amount? Explore how adding a constant or multiplying all values transforms the mean — and why the shape stays the same.</div>
+
+  <div class="tabs">
+    <button class="tab active" id="tabAdd">Add a constant</button>
+    <button class="tab" id="tabMul">Multiply by a constant</button>
+  </div>
+
+  <div class="card" id="panelAdd">
+    <div class="card-title">Every value increases by the same fixed number</div>
+    <div class="slider-row">
+      <label>Add constant k</label>
+      <input type="range" id="sliderK" min="-10" max="20" step="1" value="0">
+      <span class="slider-val" id="kVal">0</span>
+    </div>
+    <div class="slider-row">
+      <label>Dataset</label>
+      <select id="datasetSel" style="flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;background:var(--surface);color:var(--text);cursor:pointer">
+        <option value="a">8, 3, 10, 13, 4, 6, 7, 7, 8, 8, 5 (from textbook)</option>
+        <option value="b">2, 5, 7, 9, 12</option>
+        <option value="c">15, 15, 20, 25, 30, 35</option>
+      </select>
+      <span class="slider-val" style="display:none"></span>
+    </div>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <div class="panel-title">Original data</div>
+      <canvas id="cvsOrig" height="110"></canvas>
+      <div class="data-row" id="origChips"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title" id="newPanelTitle">Transformed data</div>
+      <canvas id="cvsNew" height="110"></canvas>
+      <div class="data-row" id="newChips"></div>
+    </div>
+  </div>
+
+  <div class="badges" id="badges"></div>
+
+  <div class="formula" id="formulaBox" style="margin-top:16px"></div>
+</div>
+
+<script>
+const DATASETS = {
+  a: [8,3,10,13,4,6,7,7,8,8,5],
+  b: [2,5,7,9,12],
+  c: [15,15,20,25,30,35],
+};
+
+let mode = 'add'; // 'add' | 'mul'
+let k = 0;
+let mulK = 2;
+let dataset = 'a';
+
+const tabAdd = document.getElementById('tabAdd');
+const tabMul = document.getElementById('tabMul');
+const sliderK = document.getElementById('sliderK');
+const kVal = document.getElementById('kVal');
+const datasetSel = document.getElementById('datasetSel');
+const panelAdd = document.getElementById('panelAdd');
+const origChips = document.getElementById('origChips');
+const newChips = document.getElementById('newChips');
+const badges = document.getElementById('badges');
+const formulaBox = document.getElementById('formulaBox');
+const newPanelTitle = document.getElementById('newPanelTitle');
+
+function mean(arr){ return arr.reduce((a,b)=>a+b,0)/arr.length; }
+
+function drawDotPlot(canvas, values, meanVal, color){
+  const PR = window.devicePixelRatio||1;
+  const W = canvas.parentElement.clientWidth - 32;
+  canvas.style.width = W + 'px';
+  canvas.style.height = '110px';
+  canvas.width = W * PR;
+  canvas.height = 110 * PR;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(PR, PR);
+  ctx.clearRect(0,0,W,110);
+
+  if(!values.length) return;
+
+  const allVals = values;
+  const minV = Math.min(...allVals);
+  const maxV = Math.max(...allVals);
+  const range = maxV - minV || 1;
+
+  const PAD = 24;
+  const axisY = 85;
+  const R = 8;
+
+  function vx(v){ return PAD + ((v-minV)/range)*(W-PAD*2); }
+
+  // Axis
+  ctx.beginPath();
+  ctx.strokeStyle='#c0bab2';
+  ctx.lineWidth=1.5;
+  ctx.moveTo(PAD, axisY);
+  ctx.lineTo(W-PAD, axisY);
+  ctx.stroke();
+
+  // Mean line
+  const mx = vx(meanVal);
+  ctx.beginPath();
+  ctx.strokeStyle = '#c0392b';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([4,3]);
+  ctx.moveTo(mx, axisY-55);
+  ctx.lineTo(mx, axisY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Mean label
+  ctx.fillStyle='#c0392b';
+  ctx.font='bold 10px DM Sans, sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('mean', mx, axisY-58);
+  ctx.font='500 10px DM Mono, monospace';
+  ctx.fillText(meanVal%1===0?meanVal:meanVal.toFixed(2), mx, axisY-47);
+
+  // Tick marks for distinct values
+  const distinct = [...new Set(allVals)].sort((a,b)=>a-b);
+  ctx.fillStyle='#9a958e';
+  ctx.font='10px DM Sans, sans-serif';
+  distinct.forEach(v=>{
+    const x = vx(v);
+    ctx.beginPath();
+    ctx.strokeStyle='#d0ccc8';
+    ctx.lineWidth=1;
+    ctx.moveTo(x, axisY-3);
+    ctx.lineTo(x, axisY+3);
+    ctx.stroke();
+    ctx.textAlign='center';
+    ctx.fillText(v, x, axisY+14);
+  });
+
+  // Stacked dots
+  const counts = {};
+  allVals.forEach(v=>{ counts[v]=(counts[v]||0)+1; });
+  Object.entries(counts).forEach(([v,cnt])=>{
+    v=parseFloat(v);
+    const x = vx(v);
+    for(let i=0;i<cnt;i++){
+      const cy = axisY - R - i*(R*2+2) - 4;
+      ctx.beginPath();
+      ctx.fillStyle = color||'#2c7be5';
+      ctx.arc(x, cy, R, 0, Math.PI*2);
+      ctx.fill();
+      ctx.strokeStyle='rgba(0,0,0,.15)';
+      ctx.lineWidth=1;
+      ctx.stroke();
+    }
+  });
+
+  // Mean dot
+  ctx.beginPath();
+  ctx.fillStyle='#c0392b';
+  ctx.arc(vx(meanVal), axisY, 4, 0, Math.PI*2);
+  ctx.fill();
+}
+
+function renderChips(container, values, changed){
+  container.innerHTML='';
+  values.forEach(v=>{
+    const c = document.createElement('span');
+    c.className='chip'+(changed?' changed':'');
+    c.textContent = v%1===0?v:v.toFixed(2);
+    container.appendChild(c);
+  });
+}
+
+function update(){
+  const orig = DATASETS[dataset];
+  const origMean = mean(orig);
+  let transformed, newMean;
+
+  if(mode==='add'){
+    transformed = orig.map(v=>v+k);
+    newMean = origMean + k;
+    newPanelTitle.textContent = k===0 ? 'Transformed data (unchanged)' : `Each value + ${k}`;
+  } else {
+    transformed = orig.map(v=>v*mulK);
+    newMean = origMean * mulK;
+    newPanelTitle.textContent = mulK===1 ? 'Transformed data (unchanged)' : `Each value × ${mulK}`;
+  }
+
+  renderChips(origChips, orig, false);
+  renderChips(newChips, transformed, true);
+
+  // Draw after a small delay to ensure layout settled
+  requestAnimationFrame(()=>{
+    drawDotPlot(document.getElementById('cvsOrig'), orig, origMean, '#2c7be5');
+    drawDotPlot(document.getElementById('cvsNew'), transformed, newMean, '#1a7a4a');
+  });
+
+  // Badges
+  badges.innerHTML = '';
+  const b1 = document.createElement('div');
+  b1.className='mean-badge';
+  b1.innerHTML=`Original mean: <strong>${origMean%1===0?origMean:origMean.toFixed(3)}</strong>`;
+  const arr = document.createElement('div');
+  arr.className='mean-badge arrow';
+  arr.textContent='→';
+  const b2 = document.createElement('div');
+  b2.className='mean-badge';
+
+  if(mode==='add'){
+    b2.innerHTML=`New mean: <strong>${newMean%1===0?newMean:newMean.toFixed(3)}</strong>`;
+    formulaBox.innerHTML = k===0
+      ? 'Move the slider to add or subtract a constant from every value.'
+      : `<strong>What happened:</strong> Adding ${k>0?'+'+k:k} to every value shifts the mean by exactly the same amount.<br>
+         <span class="eq">new mean = old mean + k = ${origMean%1===0?origMean:origMean.toFixed(2)} + (${k}) = ${newMean%1===0?newMean:newMean.toFixed(2)}</span>
+         Notice the dot plot on the right looks identical to the left — it has just <strong>slid</strong> along the number line by ${Math.abs(k)} units. The relative spacing between dots does not change.`;
+  } else {
+    b2.innerHTML=`New mean: <strong>${newMean%1===0?newMean:newMean.toFixed(3)}</strong>`;
+    formulaBox.innerHTML = mulK===1
+      ? 'Move the slider to multiply every value by a constant.'
+      : `<strong>What happened:</strong> Multiplying every value by ${mulK} multiplies the mean by the same amount.<br>
+         <span class="eq">new mean = old mean × k = ${origMean%1===0?origMean:origMean.toFixed(2)} × ${mulK} = ${newMean%1===0?newMean:newMean.toFixed(2)}</span>
+         Notice the spacing between dots also grows by a factor of ${mulK}. The shape stretches, unlike adding a constant where shape is preserved.`;
+  }
+
+  badges.appendChild(b1);
+  badges.appendChild(arr);
+  badges.appendChild(b2);
+}
+
+sliderK.oninput = ()=>{
+  if(mode==='add'){ k=parseInt(sliderK.value); kVal.textContent=(k>=0?'+':'')+k; }
+  else { mulK=parseFloat(sliderK.value); kVal.textContent='×'+mulK; }
+  update();
+};
+
+datasetSel.onchange = ()=>{ dataset=datasetSel.value; update(); };
+
+tabAdd.onclick = ()=>{
+  mode='add';
+  tabAdd.classList.add('active'); tabMul.classList.remove('active');
+  sliderK.min=-10; sliderK.max=20; sliderK.step=1; sliderK.value=0; k=0; kVal.textContent='+0';
+  update();
+};
+tabMul.onclick = ()=>{
+  mode='mul';
+  tabMul.classList.add('active'); tabAdd.classList.remove('active');
+  sliderK.min=0.5; sliderK.max=4; sliderK.step=0.5; sliderK.value=2; mulK=2; kVal.textContent='×2';
+  update();
+};
+
+window.addEventListener('resize', update);
+kVal.textContent='+0';
+update();
+</script>
+</body>
+</html>
