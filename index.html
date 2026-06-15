@@ -3,177 +3,217 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Shift & Scale — Ch. 12</title>
+<title>Shift &amp; Scale — Grade 8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,800;9..40,900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f4f2ec;--paper:#fff;--sand:#e8e4db;--ink:#1a1714;--rule:#ccc8be;
-  --blue:#1650a8;--green:#1a6e42;--red:#b83020;--amber:#c47a0a;
-  --display:'Bebas Neue',Impact,sans-serif;
-  --mono:'DM Mono',monospace;--body:'DM Sans',sans-serif;
+  --bg1:#fddcb5;--bg2:#dff2e0;
+  --card:#fff;--border:#1a1a2e;
+  --ink:#1a1a2e;--ink2:#4a4a5a;--ink3:#9090a0;
+  --teal:#4ecdc4;--orange:#ff6b35;--yellow:#ffd93d;--red:#e63946;--purple:#a78bfa;--green:#2a9d8f;
+  --sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;
 }
-html{background:var(--bg)}
-body{font-family:var(--body);background:var(--bg);color:var(--ink);min-height:100vh;
-  -webkit-font-smoothing:antialiased;padding:0}
+html{background:linear-gradient(135deg,var(--bg1) 0%,#fef6e8 50%,var(--bg2) 100%);min-height:100vh}
+body{font-family:var(--sans);color:var(--ink);min-height:100vh;padding:32px 24px;display:flex;flex-direction:column;align-items:center}
 
-/* MASTHEAD */
-.masthead{border-bottom:3px solid var(--ink);padding:16px 24px 12px;
-  display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:baseline}
-.m-tag{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;
-  text-transform:uppercase;opacity:.4;white-space:nowrap}
-.m-title{font-family:var(--display);font-size:clamp(24px,6vw,52px);line-height:.92;
-  text-align:center;letter-spacing:.02em}
-.m-right{font-family:var(--mono);font-size:10px;opacity:.4;text-align:right;white-space:nowrap}
-@media(max-width:480px){.masthead{grid-template-columns:1fr}.m-tag,.m-right{display:none}}
+/* PAGE CARD */
+.page-card{background:var(--card);border:2px solid var(--border);border-radius:24px;width:100%;max-width:960px;overflow:hidden}
 
-/* MODE TABS */
-.mode-bar{display:flex;border-bottom:2px solid var(--ink);background:var(--paper)}
-.mode-btn{flex:1;padding:13px 0;border:none;border-bottom:3px solid transparent;
-  background:transparent;font-family:var(--display);font-size:clamp(18px,3.5vw,26px);
-  letter-spacing:.04em;color:var(--ink);opacity:.35;cursor:pointer;margin-bottom:-2px;
-  transition:all .15s;-webkit-tap-highlight-color:transparent}
-.mode-btn.active{opacity:1;border-bottom-color:var(--ink)}
+/* HEADER */
+.card-header{padding:28px 36px 22px}
+.activity-pill{display:inline-flex;align-items:center;gap:6px;background:var(--yellow);border:2px solid var(--border);border-radius:30px;padding:4px 14px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.activity-pill::before{content:'★';font-size:10px}
+.page-title{font-size:clamp(24px,4vw,40px);font-weight:900;line-height:1.05;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.t-pill{color:#fff;border:2px solid var(--border);border-radius:12px;padding:3px 16px;font-style:italic;font-size:inherit;display:inline-block}
+.page-desc{font-size:15px;color:var(--ink2);line-height:1.6;max-width:600px}
+.page-desc em{color:var(--red);font-style:italic;font-weight:700}
 
-/* CONTROLS */
-.controls-strip{padding:14px 24px;background:var(--sand);border-bottom:1px solid var(--rule);
-  display:flex;gap:16px;flex-wrap:wrap;align-items:center}
-.ctrl-block{flex:1;min-width:180px;display:flex;flex-direction:column;gap:6px}
-.ctrl-lbl{display:flex;justify-content:space-between;align-items:baseline}
-.ctrl-lbl-text{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink);opacity:.4}
-.ctrl-val{font-family:var(--display);font-size:28px;letter-spacing:.02em;line-height:1;color:var(--red)}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;
-  background:var(--rule);outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
-  width:22px;height:22px;border-radius:50%;background:var(--red);
-  border:3px solid var(--bg);box-shadow:0 0 0 1.5px var(--red);cursor:pointer}
-input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;
-  background:var(--red);border:2px solid var(--bg);cursor:pointer}
-select{padding:6px 10px;border:1.5px solid var(--rule);background:var(--paper);
-  font-family:var(--mono);font-size:12px;color:var(--ink);outline:none;cursor:pointer;
-  transition:border .12s}
-select:focus{border-color:var(--blue)}
+/* BODY LAYOUTS */
+.two-col{display:grid;grid-template-columns:1fr 280px;border-top:1px dashed #d0d0d8}
+.two-col-wide{display:grid;grid-template-columns:1fr 320px;border-top:1px dashed #d0d0d8}
+.one-col{border-top:1px dashed #d0d0d8}
+.left-col{padding:24px 28px;border-right:1px dashed #d0d0d8;display:flex;flex-direction:column;gap:20px}
+.right-col{padding:20px 18px;display:flex;flex-direction:column;gap:14px}
+.full-col{padding:24px 28px;display:flex;flex-direction:column;gap:20px}
 
-/* CANVAS PANELS */
-.panels-section{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule)}
-@media(max-width:540px){.panels-section{grid-template-columns:1fr}}
-.canvas-panel{display:flex;flex-direction:column;border-right:1px solid var(--rule)}
-.canvas-panel:last-child{border-right:none}
-.cp-head{padding:10px 16px;border-bottom:1px solid var(--rule);
-  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink);opacity:.4}
-canvas.dp-cvs{display:block;width:100%;background:var(--paper)}
+/* SECTION LABELS */
+.sec{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sec-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0}
+.sec-title{font-size:14px;font-weight:800;color:var(--ink)}
+.sec-rule{flex:1;border:none;border-top:1px dashed #d8d8e0}
 
-/* MEAN BADGES */
-.mean-band{display:flex;align-items:center;justify-content:center;gap:12px;
-  padding:14px 24px;background:var(--paper);border-bottom:1px solid var(--rule);
-  flex-wrap:wrap}
-.mean-chip{padding:10px 16px;border:1.5px solid var(--rule);background:var(--sand);
-  display:flex;flex-direction:column;gap:2px}
-.mc-lbl{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink);opacity:.4}
-.mc-val{font-family:var(--display);font-size:clamp(20px,3.5vw,30px);letter-spacing:.02em;line-height:1}
-.mc-val.old{color:var(--blue)}
-.mc-val.new{color:var(--green)}
-.arrow{font-family:var(--display);font-size:28px;color:var(--ink);opacity:.3}
+/* INFO CARDS (right col) */
+.info-card{background:#fff;border:2px solid var(--border);border-radius:18px;padding:14px 16px}
+.info-card + .info-card{margin-top:0}
 
-/* DATA CHIPS */
-.chips-section{padding:12px 24px;border-bottom:1px solid var(--rule);
-  display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.chip-lbl{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink);opacity:.4;margin-right:4px;flex-shrink:0}
-.chip{padding:4px 10px;border:1.5px solid var(--rule);font-family:var(--mono);font-size:13px;color:var(--ink)}
-.chip.changed{border-color:var(--green);color:var(--green);background:rgba(26,110,66,.06)}
+/* CONTROLS — sliders */
+.ctrl-block{display:flex;flex-direction:column;gap:5px}
+.ctrl-head{display:flex;justify-content:space-between;align-items:baseline}
+.ctrl-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3)}
+.ctrl-val{font-family:var(--mono);font-size:24px;font-weight:700}
+input[type=range]{-webkit-appearance:none;width:100%;height:5px;border-radius:3px;background:#e8e8e8;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;cursor:pointer;border:2px solid var(--border)}
 
-/* FORMULA STRIP */
-.formula-strip{padding:16px 24px;background:var(--ink);border-bottom:1px solid var(--rule);
-  font-family:var(--mono);font-size:12px;color:#f0ece3;line-height:1.9}
-.fs-hl{color:#e8a840;font-weight:600}
-.fs-green{color:#6ec891}
+/* TABS / SCENARIO BUTTONS */
+.tab-row{display:flex;gap:8px;flex-wrap:wrap;padding:16px 28px;border-bottom:1px dashed #d0d0d8;background:#fafafa}
+.tab-btn{padding:8px 18px;border:2px solid #d0d0d8;border-radius:30px;background:#fff;font-family:var(--sans);font-size:13px;font-weight:700;color:var(--ink2);cursor:pointer;transition:all .14s}
+.tab-btn:hover{border-color:var(--teal);color:var(--teal)}
+.tab-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+.tab-btn.active-orange{background:var(--orange);color:#fff;border-color:var(--orange)}
 
-/* INSIGHT */
-.insight-row{padding:16px 24px;display:grid;grid-template-columns:3px 1fr;gap:14px}
-.ins-bar{background:var(--amber)}
-.ins-text{font-size:13.5px;line-height:1.75;color:var(--ink);opacity:.7}
-.ins-text strong{opacity:1}
+/* STEP NAV */
+.step-nav{display:flex;align-items:center;gap:12px;padding:14px 28px;border-bottom:1px dashed #d0d0d8;background:#fafafa}
+.step-btn{padding:8px 20px;border:2px solid var(--border);border-radius:30px;font-family:var(--sans);font-size:13px;font-weight:800;cursor:pointer;background:#fff;color:var(--ink2);transition:all .14s}
+.step-btn:hover:not(:disabled){background:#f5f5f5}
+.step-btn:disabled{opacity:.35;cursor:default}
+.step-btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.step-btn.primary:hover{background:#3ab5ac}
+.step-dots{display:flex;gap:6px}
+.sdot{width:9px;height:9px;border-radius:50%;background:#d8d8e0;transition:all .15s}
+.sdot.done{background:var(--teal)}
+.sdot.cur{background:var(--teal);transform:scale(1.3)}
+.step-lbl{flex:1;font-size:14px;font-weight:700;color:var(--ink)}
+
+/* STEP BANNER */
+.step-banner{padding:14px 28px;background:#fffbe6;border-bottom:1px dashed #d0d0d8;display:flex;align-items:baseline;gap:10px}
+.step-num{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--orange);flex-shrink:0}
+.step-text{font-size:15px;font-weight:700;color:var(--ink);line-height:1.4}
+
+/* CANVAS AREA */
+.canvas-wrap{background:#f4f8ff;border-radius:0;overflow:hidden;position:relative}
+canvas{display:block;width:100%;height:auto}
+
+/* FACT / STATS ROWS */
+.fact-row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px dashed #e8e8e8}
+.fact-row:last-child{border-bottom:none}
+.fact-lbl{font-size:13px;color:var(--ink2)}
+.fact-val{font-family:var(--mono);font-size:16px;font-weight:700}
+
+/* TALLY BUTTONS */
+.tally{display:flex;align-items:center;gap:8px}
+.tally-btn{width:36px;height:36px;border:2px solid var(--border);border-radius:10px;background:#fff;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;color:var(--ink2)}
+.tally-btn:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+.tally-num{font-family:var(--mono);font-size:28px;font-weight:700;min-width:40px;text-align:center}
+
+/* VERDICT STRIP */
+.verdict-strip{padding:14px 28px;font-size:15px;font-weight:700;border-top:1px dashed #d0d0d8}
+.verdict-ok{background:#e8faf9;color:var(--green)}
+.verdict-fail{background:#fef0ee;color:#c0441e}
+
+/* INSIGHT STRIP */
+.insight-strip{padding:16px 28px;font-size:14px;color:var(--ink2);line-height:1.7;background:#fffbe6;border-top:1px dashed #d0d0d8}
+.insight-strip strong{color:var(--ink);font-weight:700}
+
+/* NUMBER CIRCLES */
+.num-circle{width:26px;height:26px;border-radius:50%;background:var(--yellow);border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+
+/* FLOATING SHAPES */
+.shape{position:fixed;pointer-events:none;z-index:-1}
+.sh-circle{width:56px;height:56px;border-radius:50%;background:#ff6b6b;opacity:.65;top:80px;left:calc(50% - 530px)}
+.sh-tri{width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-bottom:38px solid #4ecdc4;opacity:.65;bottom:180px;right:calc(50% - 530px)}
+.sh-star{font-size:34px;line-height:1;opacity:.55;top:200px;right:calc(50% - 510px)}
+.sh-sq{width:36px;height:36px;border-radius:8px;background:#a78bfa;opacity:.55;bottom:90px;left:calc(50% - 510px);transform:rotate(15deg)}
+
+@media(max-width:740px){
+  body{padding:12px}
+  .two-col,.two-col-wide{grid-template-columns:1fr}
+  .left-col{border-right:none;border-bottom:1px dashed #d0d0d8}
+  .card-header,.full-col,.left-col,.right-col{padding-left:18px;padding-right:18px}
+  .tab-row,.step-nav,.step-banner,.verdict-strip,.insight-strip{padding-left:18px;padding-right:18px}
+}
+
+.dot-panel{background:#f8f8f8;border-radius:12px;border:1.5px solid #e0e0e0;overflow:hidden}
+.dot-panel-head{padding:10px 14px;font-size:12px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.07em;border-bottom:1px dashed #d0d0d8}
+.stat-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-box{padding:12px 14px;border-radius:10px;border:2px solid #e0e0e0;text-align:center;background:#fff}
+.stat-box.old{border-color:#d0d0d8}.stat-box.new-s{border-color:var(--teal);background:#e8faf9}
+.sb-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3)}
+.sb-val{font-family:'DM Mono',monospace;font-size:24px;font-weight:700}
+
+.page-card{max-width:960px}
+
+/* SHIFT/SCALE CHIPS */
+.chip{display:inline-flex;align-items:center;justify-content:center;
+  width:42px;height:42px;border-radius:50%;border:2px solid var(--border);
+  font-family:'DM Mono',monospace;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .15s;background:#e8faf9;color:var(--teal)}
+.chip.selected{background:var(--teal);color:#fff}
+
 </style>
 </head>
 <body>
-
-<div class="masthead">
-  <div class="m-tag">Ch. 12 · Data Handling</div>
-  <div class="m-title">Shift &amp; Scale</div>
-  <div class="m-right">Grade 8 · Oxford / Bhanzu</div>
-</div>
-
-<div class="mode-bar">
-  <button class="mode-btn active" data-m="add">Add a constant</button>
-  <button class="mode-btn" data-m="mul">Multiply by k</button>
-</div>
-
-<div class="controls-strip">
-  <div class="ctrl-block">
-    <div class="ctrl-lbl">
-      <span class="ctrl-lbl-text" id="k-lbl">Add k</span>
-      <span class="ctrl-val" id="k-disp">+0</span>
-    </div>
-    <input type="range" id="k-sl" min="-10" max="20" step="1" value="0">
+<div class="shape sh-circle"></div>
+<div class="shape sh-tri"></div>
+<div class="shape sh-star">★</div>
+<div class="shape sh-sq"></div>
+<div class="page-card">
+  <div class="card-header">
+    <div class="activity-pill">Ch 12 · Data Handling</div>
+    <div class="page-title">Shift &amp; <span class="t-pill" style="background:var(--orange)">Scale</span></div>
+    <p class="page-desc">See how adding or multiplying a constant changes every value — and what it does to the mean and median. The <em>dot plots show the shift visually.</em></p>
   </div>
-  <div class="ctrl-block">
-    <div class="ctrl-lbl">
-      <span class="ctrl-lbl-text">Dataset</span>
-    </div>
-    <select id="ds-sel">
-      <option value="a">8,3,10,13,4,6,7,7,8,8,5 (textbook)</option>
-      <option value="b">2,5,7,9,12</option>
-      <option value="c">15,15,20,25,30,35</option>
+
+  <!-- MODE + DATASET -->
+  <div class="tab-row" style="gap:10px;flex-wrap:wrap">
+    <span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3)">Operation:</span>
+    <button class="mode-btn tab-btn active" data-m="add">Shift (add k)</button>
+    <button class="mode-btn tab-btn" data-m="mul">Scale (multiply k)</button>
+    <span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);margin-left:8px">Dataset:</span>
+    <select id="ds-sel" style="padding:8px 12px;border:2px solid #d0d0d8;border-radius:20px;font-family:'DM Sans',system-ui;font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:var(--ink)">
+      <option value="a">Dataset A (varied)</option>
+      <option value="b">Dataset B (sparse)</option>
+      <option value="c">Dataset C (even)</option>
     </select>
   </div>
-</div>
 
-<div class="panels-section">
-  <div class="canvas-panel">
-    <div class="cp-head">Original data</div>
-    <canvas class="dp-cvs" id="dp-orig" height="220"></canvas>
+  <!-- K SLIDER -->
+  <div style="padding:16px 28px;border-bottom:1px dashed #d0d0d8;background:#fafafa;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <span class="ctrl-lbl" style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3)" id="k-lbl">k (shift amount)</span>
+    <input type="range" id="k-sl" min="-10" max="10" step="1" value="0" style="flex:1;max-width:400px;accent-color:var(--teal)">
+    <span style="font-family:'DM Mono',monospace;font-size:28px;font-weight:700;color:var(--teal);min-width:60px;text-align:center" id="k-disp">k = 0</span>
   </div>
-  <div class="canvas-panel">
-    <div class="cp-head" id="new-panel-head">Transformed data</div>
-    <canvas class="dp-cvs" id="dp-new" height="220"></canvas>
+
+  <div class="two-col-wide">
+    <div class="left-col" style="gap:16px">
+      <!-- BEFORE DOT PLOT -->
+      <div class="dot-panel">
+        <div class="dot-panel-head" style="color:var(--ink3)">Original data</div>
+        <canvas id="dp-orig" style="display:block;width:100%;background:#f8f8f8"></canvas>
+      </div>
+      <!-- AFTER DOT PLOT -->
+      <div class="dot-panel">
+        <div class="dot-panel-head new-panel-head" id="new-panel-head" style="color:var(--teal)">After shift by k = 0</div>
+        <canvas id="dp-new" style="display:block;width:100%;background:#e8faf9"></canvas>
+      </div>
+      <!-- FORMULA -->
+      <div id="formula-strip" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--ink2);line-height:1.9;padding:12px 16px;background:#fffbe6;border-radius:12px;border:1.5px solid #e0c830"></div>
+    </div>
+
+    <div class="right-col">
+      <div class="sec" style="margin-bottom:10px"><div class="sec-dot" style="background:var(--orange)"></div>
+        <span class="sec-title">What changes?</span><hr class="sec-rule"></div>
+      <div class="stat-pair">
+        <div class="stat-box old"><div class="sb-lbl">Mean (before)</div><div class="sb-val" id="mean-old">—</div></div>
+        <div class="stat-box new-s"><div class="sb-lbl">Mean (after)</div><div class="sb-val" id="mean-new">—</div></div>
+      </div>
+      <div id="main-insight" style="font-size:13px;color:var(--ink2);line-height:1.7;padding:12px 14px;background:#fffbe6;border-radius:10px;border:1.5px solid #e0c830;margin-top:4px"></div>
+      <div class="info-card" style="padding:14px">
+        <div class="sec" style="margin-bottom:8px"><div class="sec-dot" style="background:var(--purple)"></div>
+          <span class="sec-title">The rule</span><hr class="sec-rule"></div>
+        <p style="font-size:13px;color:var(--ink2);line-height:1.7">
+          <strong>Shifting</strong> (adding k to every value): mean and median both shift by k. The spread stays the same.<br><br>
+          <strong>Scaling</strong> (multiplying every value by k): mean, median, and spread all scale by k.
+        </p>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="mean-band">
-  <div class="mean-chip">
-    <div class="mc-lbl">Original mean</div>
-    <div class="mc-val old" id="mean-old">—</div>
-  </div>
-  <div class="arrow">→</div>
-  <div class="mean-chip">
-    <div class="mc-lbl" id="new-mean-lbl">New mean</div>
-    <div class="mc-val new" id="mean-new">—</div>
-  </div>
 </div>
-
-<div class="chips-section">
-  <span class="chip-lbl">Original</span>
-  <div id="orig-chips"></div>
-</div>
-<div class="chips-section">
-  <span class="chip-lbl">Transformed</span>
-  <div id="new-chips"></div>
-</div>
-
-<div class="formula-strip" id="formula-strip"></div>
-
-<div class="insight-row">
-  <div class="ins-bar"></div>
-  <p class="ins-text" id="main-insight"></p>
-</div>
-
 <script>
+
 const DATASETS={
   a:[8,3,10,13,4,6,7,7,8,8,5],
   b:[2,5,7,9,12],
@@ -317,6 +357,7 @@ document.querySelectorAll('.mode-btn').forEach(b=>b.addEventListener('click',()=
 }));
 window.addEventListener('resize',update);
 update();
+
 </script>
 </body>
 </html>
