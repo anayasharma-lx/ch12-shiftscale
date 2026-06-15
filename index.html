@@ -142,6 +142,17 @@ canvas{display:block;width:100%;height:auto}
   cursor:pointer;transition:all .15s;background:#e8faf9;color:var(--teal)}
 .chip.selected{background:var(--teal);color:#fff}
 
+
+/* SHIFT-SCALE EXTRAS */
+.chip{display:inline-flex;align-items:center;justify-content:center;
+  min-width:36px;padding:3px 8px;border-radius:20px;
+  font-family:'DM Mono',monospace;font-size:13px;font-weight:700;
+  background:#e8f0fd;color:#1650a8;border:1.5px solid #b8c8e8}
+.chip.changed{background:#e0f5ea;color:#1a6e42;border-color:#9dd4b4}
+.fs-hl{font-weight:800;color:var(--orange)}
+.fs-green{font-weight:800;color:var(--teal)}
+#formula-strip{white-space:pre-line}
+
 </style>
 </head>
 <body>
@@ -182,11 +193,13 @@ canvas{display:block;width:100%;height:auto}
       <div class="dot-panel">
         <div class="dot-panel-head" style="color:var(--ink3)">Original data</div>
         <canvas id="dp-orig" style="display:block;width:100%;background:#f8f8f8"></canvas>
+        <div id="orig-chips" style="padding:8px 12px;display:flex;flex-wrap:wrap;gap:4px;min-height:28px;border-top:1px dashed #e0e0e0"></div>
       </div>
       <!-- AFTER DOT PLOT -->
       <div class="dot-panel">
         <div class="dot-panel-head new-panel-head" id="new-panel-head" style="color:var(--teal)">After shift by k = 0</div>
         <canvas id="dp-new" style="display:block;width:100%;background:#e8faf9"></canvas>
+        <div id="new-chips" style="padding:8px 12px;display:flex;flex-wrap:wrap;gap:4px;min-height:28px;border-top:1px dashed #e0e0e0"></div>
       </div>
       <!-- FORMULA -->
       <div id="formula-strip" style="font-family:'DM Mono',monospace;font-size:14px;color:var(--ink2);line-height:1.9;padding:12px 16px;background:#fffbe6;border-radius:12px;border:1.5px solid #e0c830"></div>
